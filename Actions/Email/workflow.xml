@@ -1,0 +1,20 @@
+<workflow-app name="email-wf" xmlns="uri:oozie:workflow:0.1">
+    <start to="email-action"/>
+    <kill name="Kill">
+        <message>Error executing workflow</message>
+    </kill>
+
+    <!-- Email Action -->
+    <action name="email-action">
+        <email xmlns="uri:oozie:email-action:0.1">
+            <to>${TO_CONTACTS}</to>
+            <cc>${CC_CONTACTS}</cc>
+            <subject>Email notifications for ${wf:id()}</subject>
+            <body>The wf ${wf:id()} successfully completed.</body>
+        </email>
+        <ok to="End"/>
+        <error to="Kill"/>
+    </action>
+    
+    <end name="End"/>
+</workflow-app>
